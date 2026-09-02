@@ -1,1 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LVN License Manager</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0b0b0f;
+      color: white;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      background: #15151c;
+      border: 1px solid #292936;
+      border-radius: 18px;
+      box-shadow: 0 15px 50px rgba(0,0,0,.5);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #999;
+      margin-bottom: 25px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 12px;
+      border: 0;
+      border-radius: 10px;
+      background: #252530;
+      color: white;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      background: #6c5ce7;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 7px;
+      color: #ccc;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #333340;
+      border-radius: 10px;
+      background: #0e0e13;
+      color: white;
+      outline: none;
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #6c5ce7;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-btn:hover {
+      opacity: .9;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      color: #ff7675;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <div class="logo">LVN LICENSE MANAGER</div>
+    <div class="subtitle">Secure License Management</div>
+
+    <div class="tabs">
+      <button id="userTab" class="active" onclick="selectRole('user')">
+        User Login
+      </button>
+
+      <button id="adminTab" onclick="selectRole('admin')">
+        Admin Login
+      </button>
+    </div>
+
+    <form onsubmit="login(event)">
+
+      <label>Username</label>
+      <input id="username" type="text" required>
+
+      <label>Password</label>
+      <input id="password" type="password" required>
+
+      <button class="login-btn" type="submit">
+        Login
+      </button>
+
+    </form>
+
+    <div id="message"></div>
+
+  </div>
+
+<script>
+
+let selectedRole = "user";
+
+function selectRole(role) {
+
+  selectedRole = role;
+
+  document.getElementById("userTab").classList.remove("active");
+  document.getElementById("adminTab").classList.remove("active");
+
+  if (role === "user") {
+    document.getElementById("userTab").classList.add("active");
+  } else {
+    document.getElementById("adminTab").classList.add("active");
+  }
+
+  document.getElementById("message").textContent = "";
+}
+
+function login(event) {
+
+  event.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const userLogin =
+    username === "lavankoushik" &&
+    password === "lavankoushik35";
+
+  const adminLogin =
+    username === "lavankoushikdurishetty" &&
+    password === "lavankoushikdurishetty";
+
+  if (selectedRole === "user" && userLogin) {
+    alert("User Login Successful!");
+  }
+
+  else if (selectedRole === "admin" && adminLogin) {
+    alert("Admin Login Successful!");
+  }
+
+  else {
+    document.getElementById("message").textContent =
+      "Invalid username or password";
+  }
+}
+
+</script>
+
+</body>
+</html>
