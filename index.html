@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>LVN License Manager</title>
 
   <style>
@@ -111,28 +112,54 @@
 
   <div class="login-box">
 
-    <div class="logo">LVN LICENSE MANAGER</div>
-    <div class="subtitle">Secure License Management</div>
+    <div class="logo">
+      LVN LICENSE MANAGER
+    </div>
+
+    <div class="subtitle">
+      Secure License Management
+    </div>
 
     <div class="tabs">
-      <button id="userTab" class="active" onclick="selectRole('user')">
+
+      <button
+        id="userTab"
+        class="active"
+        onclick="selectRole('user')">
         User Login
       </button>
 
-      <button id="adminTab" onclick="selectRole('admin')">
+      <button
+        id="adminTab"
+        onclick="selectRole('admin')">
         Admin Login
       </button>
+
     </div>
 
     <form onsubmit="login(event)">
 
       <label>Username</label>
-      <input id="username" type="text" required>
+
+      <input
+        id="username"
+        type="text"
+        placeholder="Enter username"
+        required
+      >
 
       <label>Password</label>
-      <input id="password" type="password" required>
 
-      <button class="login-btn" type="submit">
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter password"
+        required
+      >
+
+      <button
+        class="login-btn"
+        type="submit">
         Login
       </button>
 
@@ -142,53 +169,86 @@
 
   </div>
 
+
 <script>
 
 let selectedRole = "user";
+
 
 function selectRole(role) {
 
   selectedRole = role;
 
-  document.getElementById("userTab").classList.remove("active");
-  document.getElementById("adminTab").classList.remove("active");
+  document
+    .getElementById("userTab")
+    .classList.remove("active");
+
+  document
+    .getElementById("adminTab")
+    .classList.remove("active");
+
 
   if (role === "user") {
-    document.getElementById("userTab").classList.add("active");
+
+    document
+      .getElementById("userTab")
+      .classList.add("active");
+
   } else {
-    document.getElementById("adminTab").classList.add("active");
+
+    document
+      .getElementById("adminTab")
+      .classList.add("active");
+
   }
 
+
   document.getElementById("message").textContent = "";
+
 }
+
 
 function login(event) {
 
   event.preventDefault();
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
 
   const userLogin =
     username === "lavankoushik" &&
     password === "lavankoushik35";
 
+
   const adminLogin =
     username === "lavankoushikdurishetty" &&
     password === "lavankoushikdurishetty";
 
+
   if (selectedRole === "user" && userLogin) {
-    alert("User Login Successful!");
+
+    window.location.href = "user.html";
+
   }
 
   else if (selectedRole === "admin" && adminLogin) {
-    alert("Admin Login Successful!");
+
+    window.location.href = "admin.html";
+
   }
 
   else {
+
     document.getElementById("message").textContent =
-      "Invalid username or password";
+      "Invalid username or password.";
+
   }
+
 }
 
 </script>
