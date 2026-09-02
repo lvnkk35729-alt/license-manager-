@@ -1,1 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>LVN User Panel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b0b0f;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+    }
+
+    .card {
+      background: #15151c;
+      border: 1px solid #292936;
+      border-radius: 18px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #999;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      color: #ccc;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #333340;
+      border-radius: 10px;
+      background: #0e0e13;
+      color: white;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #6c5ce7;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #result {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 12px;
+      background: #101017;
+      border: 1px solid #292936;
+      line-height: 1.8;
+    }
+
+    .active {
+      color: #55efc4;
+      font-weight: bold;
+    }
+
+    .expired {
+      color: #ff7675;
+      font-weight: bold;
+    }
+
+    .error {
+      color: #ff7675;
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>LVN USER PANEL</h1>
+
+    <div class="subtitle">
+      License Verification
+    </div>
+
+    <label>Username</label>
+
+    <input
+      id="username"
+      type="text"
+      placeholder="Enter your username"
+    >
+
+    <label>License Code</label>
+
+    <input
+      id="license"
+      type="text"
+      placeholder="Enter your license"
+    >
+
+    <button onclick="verifyLicense()">
+      Verify License
+    </button>
+
+    <div id="error" class="error"></div>
+
+    <div id="result"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+function verifyLicense() {
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const license =
+    document.getElementById("license").value.trim();
+
+  const error =
+    document.getElementById("error");
+
+  const result =
+    document.getElementById("result");
+
+  error.textContent = "";
+  result.style.display = "none";
+
+  if (!username || !license) {
+
+    error.textContent =
+      "Please enter username and license.";
+
+    return;
+  }
+
+
+  const saved =
+    localStorage.getItem("lvnLicense");
+
+
+  if (!saved) {
+
+    error.textContent =
+      "License not found.";
+
+    return;
+  }
+
+
+  const data =
+    JSON.parse(saved);
+
+
+  if (
+    data.user !== username ||
+    data.license !== license
+  ) {
+
+    error.textContent =
+      "Invalid license or username.";
+
+    return;
+  }
+
+
+  const today =
+    new Date();
+
+  const expiry =
+    new Date(data.expiry);
+
+
+  result.style.display = "block";
+
+
+  if (expiry >= today) {
+
+    result.innerHTML = `
+      <b>License:</b> ${data.license}<br>
+      <b>User:</b> ${data.user}<br>
+      <b>Expiry:</b> ${data.expiry}<br>
+      <b>Status:</b>
+      <span class="active">ACTIVE ✓</span>
+    `;
+
+  } else {
+
+    result.innerHTML = `
+      <b>License:</b> ${data.license}<br>
+      <b>User:</b> ${data.user}<br>
+      <b>Expiry:</b> ${data.expiry}<br>
+      <b>Status:</b>
+      <span class="expired">EXPIRED ✕</span>
+    `;
+  }
+
+}
+
+</script>
+
+</body>
+</html>
