@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LVN Admin Panel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b0b0f;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #999;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #15151c;
+      border: 1px solid #292936;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 7px;
+      color: #ccc;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #333340;
+      background: #0e0e13;
+      color: white;
+      outline: none;
+    }
+
+    button {
+      margin-top: 18px;
+      padding: 13px 20px;
+      border: 0;
+      border-radius: 10px;
+      background: #6c5ce7;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    .license {
+      padding: 15px;
+      background: #101017;
+      border: 1px solid #292936;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .status {
+      color: #55efc4;
+      font-weight: bold;
+    }
+      </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>LVN Admin Panel</h1>
+  <div class="subtitle">License Manager</div>
+
+  <div class="card">
+    <h2>Assign License</h2>
+
+    <label>License Code</label>
+    <input
+      id="license"
+      type="text"
+      placeholder="Enter existing license"
+    >
+
+    <label>Username</label>
+    <input
+      id="user"
+      type="text"
+      placeholder="Enter username"
+    >
+
+    <label>Expiry Date</label>
+    <input
+      id="expiry"
+      type="date"
+    >
+
+    <button onclick="addLicense()">
+      Assign License
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>License List</h2>
+
+    <div id="licenseList">
+      No licenses assigned yet.
+    </div>
+  </div>
+
+</div>
+
+<script>function addLicense() {
+
+  const license =
+    document.getElementById("license").value.trim();
+
+  const user =
+    document.getElementById("user").value.trim();
+
+  const expiry =
+    document.getElementById("expiry").value;
+
+  if (!license || !user || !expiry) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  const data = {
+    license: license,
+    user: user,
+    expiry: expiry
+  };
+
+  localStorage.setItem(
+    "lvnLicense",
+    JSON.stringify(data)
+  );
+
+  displayLicense();
+
+  document.getElementById("license").value = "";
+  document.getElementById("user").value = "";
+  document.getElementById("expiry").value = "";
+
+  alert("License assigned successfully!");
+}
+
+
+function displayLicense() {
+
+  const saved =
+    localStorage.getItem("lvnLicense");
+
+  if (!saved) return;
+
+  const data = JSON.parse(saved);
+
+  const today = new Date();
+  const expiry = new Date(data.expiry);
+
+  let status =
+    expiry >= today ? "ACTIVE" : "EXPIRED";
+
+  document.getElementById("licenseList").innerHTML = `
+    <div class="license">
+      <b>License:</b> ${data.license}<br><br>
+
+      <b>User:</b> ${data.user}<br><br>
+
+      <b>Expiry:</b> ${data.expiry}<br><br>
+
+      <b>Status:</b>
+      <span class="status">${status}</span>
+    </div>
+  `;
+}
+
+
+displayLicense();
+
+</script>
+
+</body>
+</html>
